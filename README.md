@@ -13,13 +13,13 @@ available via an nginx redirect on the '/' path of the container.
 
 # Docker Commands
 ## Build
-    $ docker build -t rest-container .
+    $ docker build -t f5-icontrol-gateway .
 
 ## List Images
     $ docker images
 
 ## Run (start.sh)
-    $ docker run --name rest_container --rm -d -p 8443:443 rest-container
+    $ docker run --name rest_container --rm -d -p 8443:443 f5-icontrol-gateway
 
 ## Authentication, Authorization, RBAC
 This container runs nginx as the default web listener. The default /etc/nginx configurations
