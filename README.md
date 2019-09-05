@@ -1,4 +1,5 @@
 # Description
+
 This container provides the platform for running nginx unit applications
 with access to a running iControl REST java stack process.
 
@@ -11,17 +12,22 @@ REST enabled devices.
 The Swagger UI explore for the f5-icontrol-trusted-devices application is
 available via an nginx redirect on the '/' path of the container.
 
-# Docker Commands
-## Build
-    $ docker build -t f5-icontrol-gateway .
+## Docker Commands
 
-## List Images
-    $ docker images
+### Build
 
-## Run (start.sh)
-    $ docker run --name f5_icontrol_gateway --rm -d -p 8443:443 f5-icontrol-gateway
+`$ docker build -t f5-icontrol-gateway .`
 
-## Authentication, Authorization, RBAC
+### List Images
+
+`$ docker images`
+
+### Run (start.sh)
+
+`$ docker run --name f5_icontrol_gateway --rm -d -p 8443:443 f5-icontrol-gateway`
+
+### Authentication, Authorization, RBAC
+
 This container runs nginx as the default web listener. The default /etc/nginx configurations
 implement BASIC authentication with user 'admin' with password 'admin'. To implement an
 alternative authentication, authorization, or RBAC scheme, you can volume mount the /etc/nginx
@@ -29,14 +35,21 @@ directory with your own set of nginx configurations. There is a whole book you c
 about runing nginx as an API security gateway... go read it!
 
 ### Start and stop daemon services
+
 Shell into container
 
 Container currently has 3 services: nginx, restjavad, unit
-    $ sv status 
-    $ sv up <service name> 
-    $ sv down <service name>
 
+`$ sv status`
+`$ sv up <service name>`
+`$ sv down <service name>`
 
-## Docker cleanup
-Remove all stopped containers: docker rm $(docker ps -a -q)
-Remove all untagged images: docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+### Docker cleanup
+
+Remove all stopped containers:
+
+`docker rm $(docker ps -a -q)`
+
+Remove all untagged images:
+
+`docker rmi $(docker images | grep "^<none>" | awk "{print $3}")`
