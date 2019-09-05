@@ -1,0 +1,3 @@
+[submodule "f5-icontrol-trusted-devices"]
+	path = f5-icontrol-trusted-devices
+	url = https://github.com/jgruberf5/f5-icontrol-trusted-devices.git
