@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Start daemon process(es) and keep them alive
+#
+echo 'Starting daemon process(es)'
+exec runsvdir -P /etc/service/
+
+

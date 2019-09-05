@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PID=`pgrep "nginx: master"`
+echo $PID > log
+date >> log
+wait $PID

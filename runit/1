@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Container initilization scripts should run from this run level
+#
+echo 'Running container initilization'
+
+# Install new Certificate for SSL termination if provided in bind mount 
+/scripts/importCert.sh 
+
+

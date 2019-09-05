@@ -1,0 +1,26 @@
+#!/bin/sh
+
+_term() {
+    kill -TERM "$child"    
+}
+
+trap _term SIGTERM
+
+# clean failed unit process control sockets
+rm -rf /var/run/unit/control.sock;
+echo "starting Unit app server"
+# background the process, but keep it under script control
+/usr/sbin/unitd --no-daemon &
+child=$!
+echo "Unit app server running with PID $child"
+until [ -S /var/run/unit/control.sock ]
+do
+   echo "waiting for Unit control socket to become available"
+   sleep 1
+done
+echo "Making Unit control socket available to the nginx proxy"
+chown nginx:nginx /var/run/unit/control.sock;
+echo "Unit app sever running.."
+echo "loading default configuration"
+/usr/bin/unitinit.py
+wait "$child"

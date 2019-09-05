@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Add any commands to run on triggered shutdown of the container
+#
+echo 'Waiting for services to stop...'
+sv -w 7 force-stop /etc/service/*
+sv exit /etc/service/*
+
+# echo '--- RESTNODED ---'
+# tail -n 5 /var/log/restnoded/restnoded.log
+# echo '--- RESTJAVAD ---'
+# tail -n 5 /var/log/restjavad.0.log
+
+echo 'Halted'

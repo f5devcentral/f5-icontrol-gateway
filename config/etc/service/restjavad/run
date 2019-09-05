@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# set the machineId to the last 36 characters in the cgroup ID in uuid format 
+# this lets your device trusts ourlive a restart of restjavad
+baseuuid=$(basename $(cat /proc/self/cgroup | head -1) | grep -o '.\{32\}$')
+MACHINEID=${baseuuid:0:8}-${baseuuid:8:4}-${baseuuid:12:4}-${baseuuid:16:4}-${baseuuid:20:12}
+echo $MACHINEID > /machineId
+
+# Start Java Daemon
+exec java7 -Djava.util.logging.manager=com.f5.rest.common.RestLogManager \
+-Djava.util.logging.config.file=/etc/restjavad.log.conf \
+-Dlog4j.defaultInitOverride=true \
+-Dorg.quartz.properties=/etc/quartz.properties \
+-Xss384k -Dsun.jnu.encoding=UTF-8 \
+-Dfile.encoding=UTF-8 \
+-XX:+PrintGC \
+-Xloggc:/var/log/restjavad-gc.log \
+-XX:+UseGCLogFileRotation \
+-XX:NumberOfGCLogFiles=2 \
+-XX:GCLogFileSize=1M \
+-XX:+PrintGCDateStamps \
+-XX:+PrintGCTimeStamps \
+-XX:MaxPermSize=72m -Xms96m -Xmx192m -XX:-UseLargePages -XX:StringTableSize=60013 \
+-classpath ":/usr/share/java/rest/*:/usr/share/java/rest/libs/*" com.f5.rest.workers.RestWorkerHost \
+--isPublic=false \
+--port=8100 \
+--workerJarDirectory=/usr/share/java/rest \
+--configIndexDirectory=/var/config/rest/index \
+--storageConfFile=/etc/rest.storage.BIG-IP.conf \
+--restPropertiesFiles=/etc/rest.common.properties,/etc/rest.container.properties \
+--machineId=$MACHINEID \
+--storageDirectory=/var/config/rest/storage > /var/log/restjavad.out 2>&1

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# we use this to boot up cause runit will not handle TERM and will not exit when done
+
+shutdown() {
+  echo 'Shutting Down'
+  echo 'Begin Run Level 3'
+  /etc/runit/3
+  kill -HUP $RUNSVDIR
+  wait $RUNSVDIR
+  exit
+}
+
+echo 'Begin Run Level 1'
+/etc/runit/1
+echo 'Begin Run Level 2'
+/etc/runit/2 &
+RUNSVDIR=$!
+echo "Started runsvdir, PID is $RUNSVDIR"
+trap shutdown SIGINT SIGTERM SIGHUP
+wait $RUNSVDIR
+
+shutdown

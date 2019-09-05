@@ -1,0 +1,7 @@
+#!/bin/sh
+
+NAME=java
+PID=`pgrep $NAME`
+echo $PID > log
+date >> log
+wait $PID

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PID=`pgrep /usr/sbin/unitd`
+echo $PID > log
+date >> log
+wait $PID
