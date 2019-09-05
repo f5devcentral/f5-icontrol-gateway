@@ -19,7 +19,7 @@ available via an nginx redirect on the '/' path of the container.
     $ docker images
 
 ## Run (start.sh)
-    $ docker run --name rest_container --rm -d -p 8443:443 f5-icontrol-gateway
+    $ docker run --name f5_icontrol_gateway --rm -d -p 8443:443 f5-icontrol-gateway
 
 ## Authentication, Authorization, RBAC
 This container runs nginx as the default web listener. The default /etc/nginx configurations
