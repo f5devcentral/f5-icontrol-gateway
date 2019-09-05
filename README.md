@@ -41,7 +41,9 @@ Shell into container
 Container currently has 3 services: nginx, restjavad, unit
 
 `$ sv status`
+
 `$ sv up <service name>`
+
 `$ sv down <service name>`
 
 ### Docker cleanup
