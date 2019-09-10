@@ -1,7 +1,0 @@
-#!/bin/sh
-
-NAME=httpd
-PID=`pgrep $NAME`
-echo $PID > log
-date >> log
-wait $PID
