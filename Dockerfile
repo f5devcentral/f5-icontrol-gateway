@@ -42,7 +42,7 @@ RUN mkdir -p /usr/src && \
 cd /usr/src && \
 git clone https://github.com/nginx/unit && \
 cd /usr/src/unit && \ 
-./configure --debug --user=nginx --group=nginx --prefix=/usr --openssl --control=unix:/var/run/unit/control.sock --log=/var/log/unit.log --state=/var/run/unit --pid=/var/run/unit/unit.pid && \
+./configure --user=nginx --group=nginx --prefix=/usr --openssl --control=unix:/var/run/unit/control.sock --log=/var/log/unit.log --state=/var/run/unit --pid=/var/run/unit/unit.pid && \
 ./configure go --go-path=/root/go && \
 ./configure java && \
 ./configure perl && \
