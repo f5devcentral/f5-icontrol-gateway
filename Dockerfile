@@ -80,6 +80,8 @@ COPY /f5-icontrol-trusted-devices/ /var/lib/f5-icontrol-trusted-devices/
 RUN chown -R nginx:nginx /var/lib/f5-icontrol-trusted-devices
 RUN ln -s /usr/lib/node_modules/unit-http /var/lib/f5-icontrol-trusted-devices/node_modules/unit-http
 RUN chmod +x /var/lib/f5-icontrol-trusted-devices/unitapp.js
+RUN mkdir /sshkeys
+RUN chown nginx:nginx /sshkeys
 
 # Cleanup
 RUN rm -fr /root/rpms/

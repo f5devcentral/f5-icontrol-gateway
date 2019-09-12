@@ -1,8 +1,10 @@
 #! /usr/bin/env python
 from deepmerge import always_merger
+
 import glob
 import socket
 import json
+import datetime
 
 UNIT_CONTROL_SOCKET = '/var/run/unit/control.sock'
 
@@ -14,8 +16,7 @@ for cf in sorted(glob.glob('/etc/unit/*.conf')):
         configuration = always_merger.merge(configuration, data)
 
 jsonconfig = json.dumps(configuration, indent=4, sort_keys=True)
-print('merged configuraion:')
-print(jsonconfig)
+print('[info] %s: unitinit - merged configuration: %s\n' % (datetime.datetime.now().isoformat(), jsonconfig))
 
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 try:
@@ -33,8 +34,8 @@ try:
         if not data:
             break
         res.append(data)
-    print('configuration response: %s' % ''.join(res))
+    print('[info] %s: unitinit - configuration response: %s' % (datetime.datetime.now().isoformat(),''.join(res)))
 except socket.error as err:
-    print('error writing to unit control socket: %s' % err)
+    print('[error] %s: unitinit - error writing to unit control socket: %s' % (datetime.datetime.now().isoformat(), err))
 finally:
     sock.close()
