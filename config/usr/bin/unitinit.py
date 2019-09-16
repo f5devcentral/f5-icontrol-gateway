@@ -1,10 +1,12 @@
 #! /usr/bin/env python
-from deepmerge import always_merger
+"""Init script for NGINX Unit"""
 
 import glob
 import socket
 import json
 import datetime
+
+from deepmerge import always_merger
 
 UNIT_CONTROL_SOCKET = '/var/run/unit/control.sock'
 
@@ -28,7 +30,7 @@ try:
     message += "Content-Length: %s\n\n" % len(jsonconfig)
     message += jsonconfig
     sock.sendall(message)
-    res = [];
+    res = []
     while True:
         data = sock.recv(8192)
         if not data:
