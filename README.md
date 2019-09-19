@@ -1,6 +1,6 @@
 # F5 iControl Gateway Container
 
-![f5-icontrol-gateway container](https://github.com/jgruberf5/f5-icontrol-trusted-devices/raw/master/static/images/F5iControlGatewayContainer640x360.png) 
+![f5-icontrol-gateway container](https://github.com/f5devcentral/f5-icontrol-trusted-devices/raw/master/static/images/F5iControlGatewayContainer640x360.png) 
 
 This container provides the platform for running nginx unit applications
 with access to a running iControl REST java stack process.

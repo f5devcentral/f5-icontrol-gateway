@@ -35,7 +35,7 @@ COPY config/etc/rest.container.properties /etc/rest.container.properties
 RUN mkdir -p /etc/service/restjavad/
 COPY config/etc/service/restjavad/ /etc/service/restjavad/
 # download and install unit from source
-RUN apk add git alpine-sdk go godep python2 python2-dev py2-pip python3 python3-dev php7 php7-dev php7-embed nodejs nodejs-npm nodejs-dev perl perl-dev ruby ruby-dev openssl-dev openjdk11-jdk make gcc libc-dev curl
+RUN apk add git alpine-sdk linux-headers go godep python2 python2-dev py2-pip python3 python3-dev php7 php7-dev php7-embed nodejs nodejs-npm nodejs-dev perl perl-dev ruby ruby-dev openssl-dev openjdk11-jdk make gcc libc-dev curl
 RUN npm install -g node-gyp
 RUN pip2 install deepmerge
 RUN mkdir -p /usr/src && \
@@ -56,7 +56,7 @@ make install && \
 cd / && \
 rm -rf /usr/src/unit
 # Clean dev libraries needed to compile
-RUN apk del git alpine-sdk python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
+RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
 RUN mkdir -p /etc/service/unit
 COPY config/etc/service/unit/ /etc/service/unit/
 RUN mkdir -p /etc/unit
