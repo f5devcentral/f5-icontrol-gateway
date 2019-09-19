@@ -1,0 +1,9 @@
+.idea
+node_modules/
+TestReports/
+.DS_Store
+.idea
+*.iml
+*.log
+
+.vscode/*
