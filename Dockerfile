@@ -55,8 +55,8 @@ make && \
 make install && \
 cd / && \
 rm -rf /usr/src/unit
-# Clean dev libraries needed to compile
-RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
+
+# Create UNIT service and configurations
 RUN mkdir -p /etc/service/unit
 COPY config/etc/service/unit/ /etc/service/unit/
 RUN mkdir -p /etc/unit
@@ -75,14 +75,19 @@ COPY src/scripts/* /scripts/
 RUN chmod +x /scripts/*
 
 # Install TrustDevice/TrustedProxy unit application
-RUN mkdir -p /var/lib/f5-icontrol-trusted-devices
-COPY /f5-icontrol-trusted-devices/ /var/lib/f5-icontrol-trusted-devices/
-RUN chown -R nginx:nginx /var/lib/f5-icontrol-trusted-devices
-RUN cd /var/lib/f5-icontrol-trusted-devices && npm install
-RUN ln -s /usr/lib/node_modules/unit-http /var/lib/f5-icontrol-trusted-devices/node_modules/unit-http
-RUN chmod +x /var/lib/f5-icontrol-trusted-devices/unitapp.js
-RUN mkdir /sshkeys
-RUN chown nginx:nginx /sshkeys
+RUN mkdir -p /var/lib/f5-icontrol-trusted-devices && \
+cd /var/lib && \
+git clone https://github.com/f5devcentral/f5-icontrol-trusted-devices.git && \
+cd f5-icontrol-trusted-devices && \
+npm install && \
+ln -s /usr/lib/node_modules/unit-http /var/lib/f5-icontrol-trusted-devices/node_modules/unit-http && \
+chmod +x /var/lib/f5-icontrol-trusted-devices/unitapp.js && \
+chown -R nginx:nginx /var/lib/f5-icontrol-trusted-devices && \
+mkdir /sshkeys && \
+chown nginx:nginx /sshkeys
+
+# Clean dev libraries needed to compile
+RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
 
 # Cleanup
 RUN rm -fr /root/rpms/

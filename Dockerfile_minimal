@@ -55,8 +55,8 @@ make && \
 make install && \
 cd / && \
 rm -rf /usr/src/unit
-# Clean dev libraries needed to compile
-RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
+
+# Create UNIT service and configurations
 RUN mkdir -p /etc/service/unit
 COPY config/etc/service/unit/ /etc/service/unit/
 RUN mkdir -p /etc/unit
@@ -72,6 +72,9 @@ RUN mkdir -p /etc/ssl/
 RUN mkdir -p /etc/www/pass
 COPY src/scripts/* /scripts/
 RUN chmod +x /scripts/*
+
+# Clean dev libraries needed to compile
+RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
 
 # Cleanup
 RUN rm -fr /root/rpms/

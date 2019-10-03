@@ -24,9 +24,9 @@ available via an nginx redirect on the '/' path of the container.
 
 `$ docker images`
 
-### Run (start.sh)
+### Run
 
-`$ docker run --name f5_icontrol_gateway --rm -d -p 8443:443 f5-icontrol-gateway`
+`$ docker run --name f5-icontrol-gateway --rm -d -p 8443:443 f5-icontrol-gateway`
 
 ### Authentication, Authorization, RBAC
 
