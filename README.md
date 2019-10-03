@@ -36,6 +36,17 @@ alternative authentication, authorization, or RBAC scheme, you can volume mount 
 directory with your own set of nginx configurations. There is a whole book you can read
 about runing nginx as an API security gateway... go read it!
 
+### Note on Publishing Orchestration Applications with the f5-icontrol-gateway
+
+Orchestration application can take any URI namespace except for those used by restjavad and the NGINX Unit control interface.
+
+```
+/mgmt - Used by restjavad
+/config - Used by NGINX Unit
+```
+
+If you need to overcome this limitation, because of backwards compatibility requirements, you will need to create your own NGINX configuration with more specific locations included before the NGINX locations for restjavad or NGINX Unit. Alternatively, if you desire to have your application endpoints be the ONLY reachable services from outside the container, then you can remove the externally accessible restjavad and NGINX Unit locations from the NGINX configuration completely. The services will still be started and reachable within the container on 127.0.0.1:8100 (restjavad) and 127.0.0.1:8101 (NGINX Unit control).
+
 ### Start and stop daemon services
 
 Shell into container
