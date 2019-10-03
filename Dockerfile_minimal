@@ -1,5 +1,5 @@
 # multi-stage build
-FROM alpine AS f5-icontrol-gateway
+FROM alpine AS f5-icontrol-gateway-minimal
 
 # Add VERSION file
 COPY VERSION /
@@ -22,7 +22,7 @@ RUN rpm -i --nodeps /root/rpms/java/*
 # nginx files
 RUN mkdir -p /etc/service/nginx
 COPY nginx/etc/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/etc/apigateway.conf /etc/nginx/apigateway.conf
+COPY nginx/etc/apigateway_minimal.conf /etc/nginx/apigateway.conf
 COPY nginx/etc/auth.conf /etc/nginx/auth.conf
 COPY nginx/ssl/ /etc/ssl/
 COPY config/etc/service/nginx/ /etc/service/nginx/
@@ -60,7 +60,6 @@ RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs
 RUN mkdir -p /etc/service/unit
 COPY config/etc/service/unit/ /etc/service/unit/
 RUN mkdir -p /etc/unit
-COPY config/etc/unit/01_global_listener.conf /etc/unit/
 COPY config/usr/bin/unitinit.py /usr/bin/unitinit.py
 
 # Configure runit process manager
@@ -73,16 +72,6 @@ RUN mkdir -p /etc/ssl/
 RUN mkdir -p /etc/www/pass
 COPY src/scripts/* /scripts/
 RUN chmod +x /scripts/*
-
-# Install TrustDevice/TrustedProxy unit application
-RUN mkdir -p /var/lib/f5-icontrol-trusted-devices
-COPY /f5-icontrol-trusted-devices/ /var/lib/f5-icontrol-trusted-devices/
-RUN chown -R nginx:nginx /var/lib/f5-icontrol-trusted-devices
-RUN cd /var/lib/f5-icontrol-trusted-devices && npm install
-RUN ln -s /usr/lib/node_modules/unit-http /var/lib/f5-icontrol-trusted-devices/node_modules/unit-http
-RUN chmod +x /var/lib/f5-icontrol-trusted-devices/unitapp.js
-RUN mkdir /sshkeys
-RUN chown nginx:nginx /sshkeys
 
 # Cleanup
 RUN rm -fr /root/rpms/

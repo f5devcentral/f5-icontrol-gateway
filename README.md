@@ -1,6 +1,6 @@
 # F5 iControl Gateway Container
 
-![f5-icontrol-gateway container](https://github.com/f5devcentral/f5-icontrol-trusted-devices/raw/master/static/images/F5iControlGatewayContainer640x360.png) 
+![f5-icontrol-gateway container](https://github.com/f5devcentral/f5-icontrol-trusted-devices/raw/master/static/images/F5iControlGatewayContainer640x360.png)
 
 This container provides the platform for running nginx unit applications
 with access to a running iControl REST java stack process.
@@ -40,12 +40,28 @@ about runing nginx as an API security gateway... go read it!
 
 Orchestration application can take any URI namespace except for those used by restjavad and the NGINX Unit control interface.
 
-```
+```bash
 /mgmt - Used by restjavad
 /config - Used by NGINX Unit
 ```
 
 If you need to overcome this limitation, because of backwards compatibility requirements, you will need to create your own NGINX configuration with more specific locations included before the NGINX locations for restjavad or NGINX Unit. Alternatively, if you desire to have your application endpoints be the ONLY reachable services from outside the container, then you can remove the externally accessible restjavad and NGINX Unit locations from the NGINX configuration completely. The services will still be started and reachable within the container on 127.0.0.1:8100 (restjavad) and 127.0.0.1:8101 (NGINX Unit control).
+
+### Building a Container with Only Unit Externally Exposed
+
+To build a container which only exposes the NGINX Unit published namespace, thus removing exposed access to the restjavad and NGINX Unit control interface, build a customer 'minimial' container.
+
+`$ docker build -f Dockerfile_minimal -t f5-icontrol-gateway-minimal .`
+
+The local container image will be named `f5-icontrol-gateway-minimal`.
+
+### Building a Container without the TrustedDevices Application
+
+To build a container which does not include the TrustedDevices NGINX Unit orchestration application.
+
+`$ docker build -f Dockerfile_no_trusted_devices -t f5-icontrol-gateway-no-trusted-devices .`
+
+The local container image will be named `f5-icontrol-gateway-no-trusted-devices`.
 
 ### Start and stop daemon services
 
