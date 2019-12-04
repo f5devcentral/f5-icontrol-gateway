@@ -16,8 +16,5 @@ else
    echo "available on https://localhost:8443"
 fi
 
-echo "Ctrl-C to exit f5-icontrol-gateway"
-( trap exit SIGINT ; read -r -d '' _ </dev/tty ) ## wait for Ctrl-C
-
-docker stop f5-icontrol-gateway
+docker attach f5-icontrol-gateway
  
