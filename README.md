@@ -14,6 +14,28 @@ REST enabled devices.
 The Swagger UI explore for the f5-icontrol-trusted-devices application is
 available via an nginx redirect on the '/' path of the container.
 
+## Support
+
+Because the intent of this gateway container is to enable the development
+of custom orchestration applications for use with F5 TMOS products, the
+support of the gateway itself will always be community based. Your
+orchstration application code is outside of F5 product testing,
+and thus outside of standard F5 support. However, the iControl REST API
+endpoints your applications utilize on the F5 TMOS products themselves
+remain fully supported by F5 technical support.
+
+Any issues with the container build or the included applications in
+this repository should be handled by opening issues on this repository.
+Again, this is community supported.
+
+The gateway utilizes NGINX to host endpoints and NGINX Unit to optionally
+publish your applications. Both NGINX and NGINX Unit are fully supported
+products. Please progress a remedy for any support issue with NGINX or
+NGINX Unit with F5 technical support. If you experience issues with
+NGINX or NGINX Unit running in this gateway container, please do us the
+courtesy of opening an issue on this repository so we can attempt to fix
+the issue for everyone in the community.
+
 ## Docker Commands
 
 ### Build
