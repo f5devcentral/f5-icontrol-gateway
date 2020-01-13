@@ -1,5 +1,5 @@
 # multi-stage build
-FROM alpine AS f5-icontrol-gateway
+FROM alpine:3.10.1 AS f5-icontrol-gateway
 
 # Add VERSION file
 COPY VERSION /
@@ -84,8 +84,7 @@ ln -s /usr/lib/node_modules/unit-http /var/lib/f5-icontrol-trusted-devices/node_
 chmod +x /var/lib/f5-icontrol-trusted-devices/unitapp.js && \
 chown -R nginx:nginx /var/lib/f5-icontrol-trusted-devices && \
 mkdir /sshkeys && \
-chown nginx:nginx /sshkeys && \
-apk add openssh-keygen
+chown nginx:nginx /sshkeys
 
 # Clean dev libraries needed to compile
 RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
