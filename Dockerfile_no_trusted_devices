@@ -1,12 +1,12 @@
 # multi-stage build
-FROM alpine:3.10.1 AS f5-icontrol-gateway-no-trusted-devices
+FROM alpine AS f5-icontrol-gateway-no-trusted-devices
 
 # Add VERSION file
 COPY VERSION /
 
 # Install infrastructure - nginx, hpasswd tools from apache2-utils, 
 # runit, curl to download f5 packages from artifactory, openssl to create certs  
-RUN apk --update add nginx apache2-utils openjdk7-jre-base bash runit rpm curl openssl 
+RUN apk --update add nginx apache2-utils openjdk7-jre-base bash runit curl openssl 
 
 # Hack fix to openjdk7-jre-base where this file was left out to support SSL TLS
 COPY src/sunec.jar /usr/lib/jvm/java-1.7-openjdk/jre/lib/ext/
@@ -14,9 +14,10 @@ COPY src/sunec.jar /usr/lib/jvm/java-1.7-openjdk/jre/lib/ext/
 # Add ln to specific Java7 required by F5 restjavad
 RUN ln -s /usr/lib/jvm/java-1.7-openjdk/jre/bin/java /usr/bin/java7
 
-# Install F5 restjavad packages via RPM
-COPY rpms/ /root/rpms/
-RUN rpm -i --nodeps /root/rpms/java/*
+# Install F5 restjavad packages
+COPY restjavad/restjavad.tar.gz /
+RUN cd / && \
+    tar -xzf restjavad.tar.gz
 
 # Copy files explicitly so you know what you are getting
 # nginx files
@@ -77,7 +78,7 @@ RUN chmod +x /scripts/*
 RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs-dev perl-dev ruby-dev openssl-dev make libc-dev curl
 
 # Cleanup
-RUN rm -fr /root/rpms/
+RUN rm -fr /restjavad.tar.gz
 RUN rm /etc/nginx/conf.d/default.conf
 
 VOLUME /etc/nginx
