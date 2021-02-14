@@ -11,7 +11,7 @@ then
 fi
 
 docker build -f Dockerfile_full_apikey -t f5-icontrol-gateway-apikey-secured .
-docker run --name f5-icontrol-gateway-apikey-secured --rm -i -t -p 8443:443 -v /tmp/logs/nginx:/var/log/nginx -e X_API_KEY=$X_API_KEY f5-icontrol-gateway-apikey-secured
+docker run --name f5-icontrol-gateway-apikey-secured --rm -d -p 8443:443 -e X_API_KEY=$X_API_KEY f5-icontrol-gateway-apikey-secured
 
 if [ -n "$XDG_RUNTIME_DIR" ]
 then
