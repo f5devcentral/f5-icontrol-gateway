@@ -6,7 +6,7 @@ COPY VERSION /
 
 # Install infrastructure - nginx, hpasswd tools from apache2-utils, 
 # runit, curl to download f5 packages from artifactory, openssl to create certs  
-RUN apk --update add nginx apache2-utils openjdk7-jre-base bash runit curl openssl 
+RUN apk --update add nginx apache2-utils openjdk7-jre-base bash runit curl openssl luajit nginx-mod-http-lua-upstream nginx-mod-http-echo
 
 # Hack fix to openjdk7-jre-base where this file was left out to support SSL TLS
 COPY src/sunec.jar /usr/lib/jvm/java-1.7-openjdk/jre/lib/ext/
