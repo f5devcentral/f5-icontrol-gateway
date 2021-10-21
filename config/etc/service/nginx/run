@@ -42,5 +42,11 @@ else
 	echo "ERROR: Incorrect AUTH parameter specified"
 fi
 
+has_api_key=$(grep 'set \$api_key' /etc/nginx/apigateway.conf | wc -l)
+if [ "$has_api_key" == "1" ]
+then 
+    envsubst '${X_API_KEY}' < /etc/nginx/apigateway.conf 
+fi
+
 exec /usr/sbin/nginx -g "daemon off;";
 

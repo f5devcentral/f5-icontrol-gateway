@@ -1,12 +1,12 @@
 # multi-stage build
-FROM alpine:3.11 AS f5-icontrol-gateway
+FROM alpine:latest AS f5-icontrol-gateway
 
 # Add VERSION file
 COPY VERSION /
 
 # Install infrastructure - nginx, hpasswd tools from apache2-utils, 
 # runit, curl to download f5 packages from artifactory, openssl to create certs  
-RUN apk --update add nginx apache2-utils openjdk7-jre-base bash runit curl openssl luajit nginx-mod-http-lua-upstream nginx-mod-http-echo
+RUN apk --update add nginx apache2-utils openjdk7-jre-base bash runit curl openssl nginx-mod-http-echo
 
 # Hack fix to openjdk7-jre-base where this file was left out to support SSL TLS
 COPY src/sunec.jar /usr/lib/jvm/java-1.7-openjdk/jre/lib/ext/
@@ -36,9 +36,10 @@ COPY config/etc/rest.container.properties /etc/rest.container.properties
 RUN mkdir -p /etc/service/restjavad/
 COPY config/etc/service/restjavad/ /etc/service/restjavad/
 # download and install unit from source
-RUN apk add git alpine-sdk linux-headers go godep python2 python2-dev py2-pip python3 python3-dev php7 php7-dev php7-embed nodejs npm nodejs-dev perl perl-dev ruby ruby-dev openssl-dev openjdk11-jdk make gcc libc-dev curl
+## watch for swith from openssl-dev to openssl1.1-compat-dev from the alpine folks as the go to OpenSSL 3.0
+RUN apk add git alpine-sdk linux-headers go python3 py3-pip python3-dev php7 php7-dev php7-embed nodejs npm nodejs-dev perl perl-dev ruby ruby-dev openssl-dev openjdk11-jdk make gcc libc-dev curl
 RUN npm install -g node-gyp
-RUN pip2 install deepmerge
+RUN pip install deepmerge
 RUN mkdir -p /usr/src && \
 cd /usr/src && \
 git clone https://github.com/nginx/unit && \
@@ -48,7 +49,6 @@ cd /usr/src/unit && \
 ./configure java && \
 ./configure perl && \
 ./configure php && \
-./configure python --config=python2-config && \
 ./configure python --config=python3-config && \
 ./configure ruby && \
 ./configure nodejs && \
@@ -81,7 +81,7 @@ cd /var/lib && \
 git clone https://github.com/f5devcentral/f5-icontrol-trusted-devices.git && \
 cd f5-icontrol-trusted-devices && \
 npm install && \
-ln -s /usr/lib/node_modules/unit-http /var/lib/f5-icontrol-trusted-devices/node_modules/unit-http && \
+ln -s /usr/local/lib/node_modules/unit-http /var/lib/f5-icontrol-trusted-devices/node_modules/unit-http && \
 chmod +x /var/lib/f5-icontrol-trusted-devices/unitapp.js && \
 chown -R nginx:nginx /var/lib/f5-icontrol-trusted-devices && \
 mkdir /sshkeys && \
@@ -92,7 +92,7 @@ RUN apk del git alpine-sdk linux-headers python2-dev python3-dev php7-dev nodejs
 
 # Cleanup
 RUN rm -fr /restjavad.tar.gz
-RUN rm /etc/nginx/conf.d/default.conf
+RUN rm -f /etc/nginx/conf.d/default.conf
 
 VOLUME /etc/nginx
 

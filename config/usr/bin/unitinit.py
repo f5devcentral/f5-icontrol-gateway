@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Init script for NGINX Unit"""
 
 import glob
@@ -29,13 +29,13 @@ try:
     message += "Content-Type: application/json\n"
     message += "Content-Length: %s\n\n" % len(jsonconfig)
     message += jsonconfig
-    sock.sendall(message)
+    sock.sendall(message.encode('utf-8'))
     res = []
     while True:
         data = sock.recv(8192)
         if not data:
             break
-        res.append(data)
+        res.append(data.decode('utf-8'))
     print('[info] %s: unitinit - configuration response: %s' % (datetime.datetime.now().isoformat(),''.join(res)))
 except socket.error as err:
     print('[error] %s: unitinit - error writing to unit control socket: %s' % (datetime.datetime.now().isoformat(), err))
