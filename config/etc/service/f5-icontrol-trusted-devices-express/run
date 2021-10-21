@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd /var/lib/f5-icontrol-trusted-devices
+# Start express service
+export PORT=8105
+exec /usr/bin/node index.js 

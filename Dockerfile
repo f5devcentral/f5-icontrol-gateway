@@ -10,6 +10,20 @@ RUN apk --update add nginx apache2-utils openjdk7-jre-base bash runit curl opens
 
 # Hack fix to openjdk7-jre-base where this file was left out to support SSL TLS
 COPY src/sunec.jar /usr/lib/jvm/java-1.7-openjdk/jre/lib/ext/
+# Remove crypto algorithum which fail older jar test
+RUN sed -i 's/X9.62 c2tnb191v1,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 c2tnb191v2,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 c2tnb191v3,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 c2tnb239v1,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 c2tnb239v2,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 c2tnb239v3,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 c2tnb359v1,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 c2tnb431r1,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 prime192v2,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 prime192v3,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 prime239v1,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 prime239v2,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security && \
+    sed -i 's/X9.62 prime239v3,//g' /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/java.security
 
 # Add ln to specific Java7 required by F5 restjavad
 RUN ln -s /usr/lib/jvm/java-1.7-openjdk/jre/bin/java /usr/bin/java7
