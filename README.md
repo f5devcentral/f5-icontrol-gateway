@@ -106,3 +106,10 @@ Remove all stopped containers:
 Remove all untagged images:
 
 `docker rmi $(docker images | grep "^<none>" | awk "{print $3}")`
+
+
+### Persisting container device Id and storage between container instances
+
+If you want to persist the container trusts and storage between instances, mount a volume to the `/var/config/rest` directory.
+
+WARNING: You must secure the volume mount as it contains sensitive information.

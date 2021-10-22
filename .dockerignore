@@ -1,0 +1,12 @@
+# Following files are unnecessary in production
+
+.vscode
+test
+perfTesting
+scripts
+utilities
+README.md
+.gitignore
+.gitlab-ci.yml
+Jenkinsfile
+npm-debug.log

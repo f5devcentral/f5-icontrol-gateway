@@ -1,5 +1,5 @@
 # multi-stage build
-FROM alpine:latest AS f5-icontrol-gateway-no-trusted-devices
+FROM alpine:3.14 AS f5-icontrol-gateway-no-trusted-devices
 
 # Add VERSION file
 COPY VERSION /

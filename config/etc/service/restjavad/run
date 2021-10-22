@@ -1,9 +1,23 @@
 #!/bin/sh
 
-# set the machineId to the last 36 characters in the cgroup ID in uuid format 
-# this lets your device trusts ourlive a restart of restjavad
-baseuuid=$(basename $(cat /proc/self/cgroup | head -1) | grep -o '.\{32\}$')
-MACHINEID=${baseuuid:0:8}-${baseuuid:8:4}-${baseuuid:12:4}-${baseuuid:16:4}-${baseuuid:20:12}
+# allow the setting of the persistence directory for lucene storage
+# from an environment variable.
+if [ -z "$PERSISTDIR" ]
+then
+   PERSISTDIR='/var/config/rest'
+fi
+
+# we'll persist the machineId to let it live beyond a container restart
+if [ -f "$PERSISTDIR/machineId" ]
+then
+   MACHINEID=$(cat $PERSISTDIR/machineId)
+else
+   # set the machineId to the last 36 characters in the cgroup ID in uuid format 
+   # this lets your device trusts outlive a restart of restjavad
+   baseuuid=$(basename $(cat /proc/self/cgroup | head -1) | grep -o '.\{32\}$')
+   MACHINEID=${baseuuid:0:8}-${baseuuid:8:4}-${baseuuid:12:4}-${baseuuid:16:4}-${baseuuid:20:12}
+   echo $MACHINEID > $PERSISTDIR/machineId
+fi
 echo $MACHINEID > /machineId
 
 # Start Java Daemon
@@ -25,8 +39,8 @@ exec java7 -Djava.util.logging.manager=com.f5.rest.common.RestLogManager \
 --isPublic=false \
 --port=8100 \
 --workerJarDirectory=/usr/share/java/rest \
---configIndexDirectory=/var/config/rest/index \
+--configIndexDirectory=$PERSISTDIR/index \
 --storageConfFile=/etc/rest.storage.BIG-IP.conf \
 --restPropertiesFiles=/etc/rest.common.properties,/etc/rest.container.properties \
 --machineId=$MACHINEID \
---storageDirectory=/var/config/rest/storage > /var/log/restjavad.out 2>&1
+--storageDirectory=$PERSISTDIR/storage > /var/log/restjavad.out 2>&1

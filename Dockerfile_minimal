@@ -1,5 +1,5 @@
 # multi-stage build
-FROM alpine:latest AS f5-icontrol-gateway-minimal
+FROM alpine:3.14 AS f5-icontrol-gateway-minimal
 
 # Add VERSION file
 COPY VERSION /
